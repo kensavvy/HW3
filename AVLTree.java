@@ -362,8 +362,98 @@ class LUC_AVLTree {
          * do many of the same things as this method.
          */
 
+        // Base case: if the tree is empty
+        if (node == null) {
+            return node;
+        }
+
+        // Step 1: Find the node to delete
+
+        // Move to the left subtree if value is less than current node
+        if (value < node.value) {
+            node.leftChild = deleteElement(value, node.leftChild);
+
+        // Move to the right subtree if value is greater than current node
+        } else if (value > node.value) {
+            node.rightChild = deleteElement(value, node.rightChild);
+
+
+        // Step 2: Node to be deleted is found
+
+        // When value equals the current node
+        } else {
+
+            // Scenario 1: Node has no children (leaf node)
+
+            // Remove the node by returning null
+            if (node.leftChild == null && node.rightChild == null) {
+                return null;
+            }
+
+            // Scenarios 2 and 3: Node has one child
+
+            // If the left child does not exist, return the right child
+            else if (node.leftChild == null) {
+                return node.rightChild;
+
+            // If the right child does not exist, return the left child
+            } else if (node.rightChild == null) {
+                return node.leftChild;
+            }
+
+            // Scenario 4: Node has two children
+
+            // When both left and right children exist
+            else {
+
+                // Use minimum value in right subtree to find the in-order successor
+                Node successor = minValueNode(node.rightChild);
+
+                // Replace the current node's value with the in-order successor
+                node.value = successor.value;
+
+                // Remove the in-order successor from the right subtree
+                node.rightChild = deleteElement(successor.value, node.rightChild);
+            }
+        }
+
+
+        // Step 3: Recalculate the height of the current node
+
+        // Ensure that AVL tree updates height after node deletion
+        node.height = getMaxHeight(getHeight(node.leftChild), getHeight(node.rightChild)) + 1;
+
+
+        // Step 4: Balance the tree
+
+        // Initialize an integer with balance factor of node
+        int balance = getBalanceFactor(node);
+
+        // If the node is unbalanced, then perform rotations
+
+        // Left-Left Rotation
+        if (balance > 1 && getBalanceFactor(node.leftChild) >= 0) {
+            return LLRotation(node);
+        }
+
+        // Left-Right Rotation
+        if (balance > 1 && getBalanceFactor(node.leftChild) < 0) {
+            return LRRotation(node);
+        }
+
+        // Right-Right Rotation
+        if (balance < -1 && getBalanceFactor(node.rightChild) <= 0) {
+            return RRRotation(node);
+        }
+
+        // Right-Left Rotation
+        if (balance < -1 && getBalanceFactor(node.rightChild) > 0) {
+            return RLRotation(node);
+        }
+
         return node;
-    }
+
+    } // end deleteElement method
 
 
     /**
