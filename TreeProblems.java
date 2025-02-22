@@ -1,5 +1,5 @@
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** Kendall Savino / COMP 272 002 ***
  *
  * This java file contains several simple tree problems that need to be
  * codified. These routines  must use the TreeMap and TreeSet library
@@ -27,8 +27,21 @@ public class TreeProblems {
     // *several* lines of code. Hint: create two temporary TreeSets and utilize the
     // methods retainAll(), addAll(), and removeAll(). But in the end, get something to work.
 
-    return setA;
-  }
+    // Initialize new tree set to store elements from A
+    Set<Integer> result = new TreeSet<>(setA);
+
+    // Keep only elements in A that are not in B (tree set)
+    result.removeAll(setB);
+
+    // Keep only elements in B that are not in A (setB)
+    setB.removeAll(setA);
+
+    // Add all remaining elements from set B to tree set
+    result.addAll(setB);
+
+    return result;
+
+  } // end different method
 
 
   /**
@@ -42,8 +55,22 @@ public class TreeProblems {
 
     // INSERT CODE HERE.
 
-    return;
-  }
+    // Initialize iterator from java util to loop through map entries
+    Iterator<Map.Entry<Integer, String>> iterator = treeMap.entrySet().iterator();
+
+    // So long as the iterator has a next entry, get it from the map
+    while (iterator.hasNext()) {
+      Map.Entry<Integer, String> entry = iterator.next();
+
+      // Remove current map entry if the key is even
+      if (entry.getKey() % 2 == 0) {
+        iterator.remove();
+
+      }
+
+    }
+
+  } // end removeEven method
 
 
   /**
@@ -57,8 +84,16 @@ public class TreeProblems {
 
     // INSERT CODE HERE
 
-    return false;
+    // Initialize boolean variable to false, assuming the two trees are not equal
+    boolean isEqual = false;
 
-  }
+    // Udate boolean variable to be true if equality between trees is found
+    if (tree1.equals(tree2) == true) {
+      isEqual = true;
+    }
+
+    return isEqual;
+
+  } // end treesEqual method
 
 } // end treeProblems class
